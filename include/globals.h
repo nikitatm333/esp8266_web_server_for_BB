@@ -3,7 +3,7 @@
 // размер буфера точек для графика
 #ifndef GRAPH_BUFFER_LEN
 #define GRAPH_BUFFER_LEN 100
-
+#endif
 
 extern const int L;           // длина буфера (GRAPH_BUFFER_LEN)
 extern int TShead;            // индекс головы (след. запись)
@@ -17,7 +17,4 @@ extern int LLL;               // для отладки/ длина svg (если
 extern float sensor1, sensor2, sensor3, sensor4, sensorCentral;
 extern float pid1, pid2, pid3, pid4;
 
-extern bool configDirty;
-extern unsigned long configDirtySince;
-extern const unsigned long CONFIG_SAVE_DEBOUNCE_MS;
-#endif
+void initGraphStorage();

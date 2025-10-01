@@ -9,10 +9,9 @@ struct Config {
 };
 
 extern Config g_config;
-
-bool loadConfig(Config &cfg);
-bool saveConfig(const Config &cfg);
-
 extern bool configDirty;
 extern unsigned long configDirtySince;
 extern const unsigned long CONFIG_SAVE_DEBOUNCE_MS;
+
+bool loadConfig(Config &cfg);
+bool saveConfig(const Config &cfg);

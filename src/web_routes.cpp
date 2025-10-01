@@ -10,6 +10,8 @@
 #include "config.h"
 #include <ESP8266WiFi.h> // чтобы IPAddress был виден
 
+#include <LittleFS.h>
+
 // --- обработчики страниц ---
 void handleRoot() {
   server.send_P(200, "text/html; charset=utf-8", INDEX_PAGE);
@@ -153,6 +155,14 @@ void handleGraphSvg() {
   server.send(200, "image/svg+xml; charset=utf-8", svg);
 }
 
+
+void handleGraphClear() {
+  for (int i = 0; i < L; ++i) TStorage[i] = NAN;
+  TShead = 0;
+  TStail = 0;
+  server.send(200, "text/plain", "OK");
+}
+
 void handleNotFound() {
   server.send(404, "text/plain", "Not found");
 }
@@ -171,5 +181,24 @@ void setupRoutes() {
   server.on("/get_mac", HTTP_GET, handleGetMac);
   server.on("/graph", HTTP_GET, handleGraphPage);
   server.on("/graph_svg", HTTP_GET, handleGraphSvg);
+  server.on("/graph_clear", HTTP_POST, handleGraphClear);
   server.onNotFound(handleNotFound);
+
+  server.on("/dumpconfig", HTTP_GET, []() {
+  String body = "<html><body><pre>";
+  if (!LittleFS.begin()) {
+    body += "LittleFS not mounted";
+  } else if (!LittleFS.exists("/config.json")) {
+    body += "&lt;no config file&gt;";
+  } else {
+    File f = LittleFS.open("/config.json", "r");
+    if (!f) body += "open failed";
+    else {
+      body += f.readString();
+      f.close();
+    }
+  }
+  body += "</pre></body></html>";
+  server.send(200, "text/html", body);
+});
 }

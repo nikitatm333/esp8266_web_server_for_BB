@@ -8,6 +8,7 @@
 #include <stdio.h>   // sscanf
 #include <string.h>  // strlen
 
+
 // Разделение строки на токены по пробельным символам
 int splitTokens(const String &line, String tokens[], int maxTokens) {
   int tcount = 0;
@@ -78,7 +79,7 @@ void handleSerial() {
             pushLogLine("[CFG] RESET command received - resetting SSID/password");
 
             // обновляем конфиг
-            g_config.ssid = String("ESP_RESET");
+            g_config.ssid = String("BB_RESET");
             g_config.pass = String("");
 
             // обновляем lastCmd для отображения
@@ -86,8 +87,8 @@ void handleSerial() {
 
             // сохраним конфиг (persist)
             if (saveConfig(g_config)) {
-              pushLogLine("[CFG] Config saved: SSID=ESP_RESET");
-              Serial.println("[CFG] Config saved: SSID=ESP_RESET");
+              pushLogLine("[CFG] Config saved: SSID=BB_RESET");
+              Serial.println("[CFG] Config saved: SSID=BB_RESET");
             } else {
               pushLogLine("[CFG] Config save FAILED!");
               Serial.println("[CFG] Config save FAILED!");
@@ -262,3 +263,5 @@ void handleSerial() {
     }
   }
 }
+
+

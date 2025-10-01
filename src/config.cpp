@@ -3,13 +3,14 @@
 #include <ArduinoJson.h>
 
 Config g_config;
+bool configDirty = false;
+unsigned long configDirtySince = 0;
+const unsigned long CONFIG_SAVE_DEBOUNCE_MS = 5000UL;
 
 static const char* CONFIG_FILE = "/config.json";
 
 bool loadConfig(Config &cfg) {
   if (!LittleFS.begin()) {
-    // попытка форматировать и смонтировать (редко нужно)
-    // LittleFS.format(); // осторожно — стереть FS если нужно
     if (!LittleFS.begin()) return false;
   }
 
